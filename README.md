@@ -1,7 +1,9 @@
 # FP-KK
 KNN and GA
 
-dataset : https://www.kaggle.com/imnikhilanand/heart-attack-prediction
+dataset references : 
+https://www.kaggle.com/imnikhilanand/heart-attack-prediction
+https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/heart-disease.names
 
 Attribute Information:
 -- Only 14 used

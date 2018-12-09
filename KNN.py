@@ -13,7 +13,7 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
         for x in range(len(dataset) - 1):
             for y in range(13):
                 if dataset[x][y ]== "?":
-                    dataset[x][y] = float(0.0)
+                    dataset[x][y] = float(-9.0)
                 else:
                     dataset[x][y] = float(dataset[x][y])
             if random.random() > split:

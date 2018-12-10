@@ -1,5 +1,3 @@
-# copyright by safiravanillia
-
 import csv
 import random
 import operator
@@ -12,7 +10,7 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
         dataset = list(lines)
         count = 1
         for x in range(len(dataset)):
-            for y in range(14):
+            for y in range(13):
                 if dataset[x][y ]== "?":
                     dataset[x][y] = float(-9.0)
                 else:
@@ -28,7 +26,7 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
 def manhattanDistance(instance1, instance2, length):
     distance = 0
     for x in range(length):
-        distance += abs(instance1[x] - instance2[x])
+        distance += pow(abs(instance1[x] - instance2[x]),2)
     return distance
 
 def getNeighbors(trainingSet, testInstance, k):

@@ -5,23 +5,44 @@ import random
 import sys
 import time
 import datetime
+from sklearn import preprocessing
 
 # Handling dataset dari iris.data dan split menjadi trainingSet dan testSet
 def loadDataset(filename, split, trainingSet=[], testSet=[]):
- with open(filename, 'rb') as csvfile:
-    lines = csv.reader(csvfile)
-    dataset = list(lines)
-    for x in range(len(dataset)-1):
-        for y in range(13):
-            if dataset[x][y] == "?":
-                dataset[x][y] = float(-9.0)
-            else:
-                dataset[x][y] = float(dataset[x][y])
-        if random.random() < split:
-            trainingSet.append(dataset[x])
-        else:
-            testSet.append(dataset[x])
+    with open(filename, 'r') as csvfile:
+        lines = csv.reader(csvfile)
+        dataset = list(lines)
 
+        count = 1
+        for x in range(len(dataset)):
+            for y in range(13):
+                if dataset[x][y ]== "?":
+                    dataset[x][y] = float(-9.0)
+                else:
+                    dataset[x][y] = float(dataset[x][y])
+
+        #print(dataset)
+        a, b, c, d, e, f, g, h, i, j, k, l,m, n = zip(*dataset)
+        coba = zip(a, b, c, d, e, f, g, h, i, j, k, l,m )
+        fixbgt = list(coba)
+        fix = [list(elem) for elem in fixbgt]
+        #print(fix)
+
+        normalisasi = preprocessing.normalize(fix)
+        #print(normalisasi)
+        a, b, c, d, e, f, g, h, i, j, k, l, m = zip(*normalisasi)
+
+        zip2=zip(a, b, c, d, e, f, g, h, i, j, k, l,m,n)
+        fixbgt1 = list(zip2)
+        yep = [list(elem) for elem in fixbgt1]
+        #print(yep)
+
+        for x in range(len(yep)):
+            if random.random() < split:
+                trainingSet.append((count, yep[x]))
+            else:
+                testSet.append((count, yep[x]))
+            count += 1
 
 # perhitungan euclidean distance untuk menghitung jarak -- terikat dengan getNeighbors
 def euclideanDistance(instance1, instance2, length, weights):
@@ -40,15 +61,21 @@ def getNeighbors(trainingSet, testInstance, k, weights):
     distances = []
     length = len(testInstance) - 1
     for x in range(len(trainingSet)):
-        dist = euclideanDistance(testInstance, trainingSet[x], length, weights)
-        distances.append((trainingSet[x], dist))
-    distances.sort(key=operator.itemgetter(1))
+        dist = euclideanDistance(testInstance, trainingSet[x][1], length, weights)
+        distances.append(((trainingSet[x][0], trainingSet[x][1], dist)))
+    distances.sort(key=operator.itemgetter(-1))
     neighbors = []
-    for x in range(len(distances)):
-        if distances[x][1] <= k:
-            neighbors.append(distances[x][0])
-    if neighbors != None:
-        neighbors.append(distances[0][0])
+    #print(distances)
+    for x in range(k):
+        neighbors.append(distances[x])
+
+     #yang dikomen versi kating, nilai k nya 0.2
+    #for x in range(len(distances)):
+    #    if distances[x][1] <= k:
+     #       neighbors.append(distances[x][0])
+    #if neighbors != None:
+    #    neighbors.append(distances[0][0])
+    #print(neighbors)
     return neighbors
 
 # menyusun perkiraan respon berdasarkan neighbors tersebut
@@ -56,7 +83,7 @@ def getNeighbors(trainingSet, testInstance, k, weights):
 def getResponse(neighbors):
     classVotes = {}
     for x in range(len(neighbors)):
-        response = neighbors[x][-1]
+        response = neighbors[x][1][-1]
         if response in classVotes:
             classVotes[response] += 1
         else:
@@ -68,7 +95,7 @@ def getResponse(neighbors):
 def getAccuracy(testSet, predictions):
     correct = 0
     for x in range(len(testSet) - 1):
-        if testSet[x][-1] == predictions[x]:
+        if testSet[x][1][-1] == predictions[x]:
             correct += 1
     return float((correct / float(len(testSet))) * 100.0)
 
@@ -92,12 +119,16 @@ def train():
     # weight = 4 karena jumlah atribut pada iris.data adalah 4
     weights = [0] * 13
     # TresholdValue -- threshold value k* is used to segment an image, digunakan 0.2 dari range 0 - 1
-    TresholdValue = input("Masukkan jumlah k: ")
+    #TresholdValue = input("Masukkan jumlah k: ")
+    #TresholdValue=int(TresholdValue)
+    TresholdValue = 3
     start_time = time.time()
     king = {"Epoch": 0, "Genome": weights, "Accuracy": float(specy(TresholdValue, weights))}
     speed = time.time() - start_time
     # epos sejumlah 50x
     Epos = input("Masukkan jumlah epoch: ")
+    Epos=int(Epos)
+    #Epos=5
     Deep = 1
     print("Number of epochs is " + str(Epos))
     print("Deepness of the analysis is " + str(Deep))
@@ -131,8 +162,9 @@ def train():
             for k in range(10):
                 # range = 4 -- uniform crossover
                 new_weight = [float(i) for i in
-                              [random.SystemRandom().uniform(-10.0, 10.0) for _ in range(13)]]                               #generate random data for population
+                              [random.SystemRandom().uniform(0, 1.0) for _ in range(13)]]                               #generate random data for population
                 #print (new_weight)
+                #print(genome)
                 genome2 = [abs(float((x + y))) for x, y in zip(genome, new_weight)]
                 #print (x,y)
                 organism.append({"Epoch": epoha, "Genome": genome2, "Accuracy": float(specy(TresholdValue, genome2))})      #getting accuracy with knn classification
@@ -167,4 +199,3 @@ def train():
 
 
 train()
-

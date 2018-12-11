@@ -1,6 +1,7 @@
 import csv
 import random
 import operator
+from sklearn import preprocessing
 
 #record=[]
 
@@ -8,6 +9,7 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
     with open(filename, 'r') as csvfile:
         lines = csv.reader(csvfile)
         dataset = list(lines)
+
         count = 1
         for x in range(len(dataset)):
             for y in range(13):
@@ -15,10 +17,28 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
                     dataset[x][y] = float(-9.0)
                 else:
                     dataset[x][y] = float(dataset[x][y])
+
+        #print(dataset)
+        a, b, c, d, e, f, g, h, i, j, k, l,m, n = zip(*dataset)
+        coba = zip(a, b, c, d, e, f, g, h, i, j, k, l,m )
+        fixbgt = list(coba)
+        fix = [list(elem) for elem in fixbgt]
+        #print(fix)
+
+        normalisasi = preprocessing.normalize(fix)
+        #print(normalisasi)
+        a, b, c, d, e, f, g, h, i, j, k, l, m = zip(*normalisasi)
+
+        zip2=zip(a, b, c, d, e, f, g, h, i, j, k, l,m,n)
+        fixbgt1 = list(zip2)
+        yep = [list(elem) for elem in fixbgt1]
+        #print(fixbgt1)
+
+        for x in range(len(yep)):
             if random.random() < split:
-                trainingSet.append((count, dataset[x]))
+                trainingSet.append((count, yep[x]))
             else:
-                testSet.append((count, dataset[x]))
+                testSet.append((count, yep[x]))
             count += 1
 
 def manhattanDistance(instance1, instance2, length):
@@ -68,8 +88,8 @@ def main():
     predictions = []
     correct = 0
     false = 0
-    k = input("\nMasukkan jumlah k: ")
-
+    k=input("\nMasukkan nilai k: ")
+    k=int(k)
     for x in range(len(testSet)):
         neighbors = getNeighbors(trainingSet, testSet[x][1], k)
         result = getResponse(neighbors)

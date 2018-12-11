@@ -15,10 +15,8 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
                     dataset[x][y] = float(-9.0)
                 else:
                     dataset[x][y] = float(dataset[x][y])
-            if random.random() > split:
+            if random.random() < split:
                 trainingSet.append((count, dataset[x]))
-                #record.append(x)
-                #print(random.random())
             else:
                 testSet.append((count, dataset[x]))
             count += 1
@@ -62,7 +60,7 @@ def getAccuracy(testSet, predictions):
 def main():
     trainingSet = []
     testSet = []
-    split = 0.3
+    split = 0.67
     loadDataset('data.csv', split, trainingSet, testSet)
     print("Train set:" + repr(len(trainingSet)))
     print("Test set:"+ repr(len(testSet)))
@@ -70,7 +68,8 @@ def main():
     predictions = []
     correct = 0
     false = 0
-    k = 3
+    k = input("\nMasukkan jumlah k: ")
+
     for x in range(len(testSet)):
         neighbors = getNeighbors(trainingSet, testSet[x][1], k)
         result = getResponse(neighbors)

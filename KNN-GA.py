@@ -81,15 +81,27 @@ def getNeighbors(trainingSet, testInstance, k, weights):
 # menyusun perkiraan respon berdasarkan neighbors tersebut
 # neighbors ambil vote untuk atribut class-nya dan getResponse akan ambil vote terbesar sebagai prediksi
 def getResponse(neighbors):
-    classVotes = {}
+    #classVotes = {}
+    #for x in range(len(neighbors)):
+     #   response = neighbors[x][1][-1]
+      #  if response in classVotes:
+       #     classVotes[response] += 1
+        #else:
+         #   classVotes[response] = 1
+    #sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+    #return sortedVotes[0][0]
+    wx = {}
     for x in range(len(neighbors)):
         response = neighbors[x][1][-1]
-        if response in classVotes:
-            classVotes[response] += 1
+        if neighbors[x][-1] == 0.0:
+            return neighbors[x][1][-1]
+        elif response in wx:
+            wx[response] += (1/pow(neighbors[x][-1], 2))
         else:
-            classVotes[response] = 1
-    sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+            wx[response] = (1/pow(neighbors[x][-1], 2))
+    sortedVotes = sorted(wx.items(), key=operator.itemgetter(1), reverse=True)
     return sortedVotes[0][0]
+    
 
 # evaluasi accuracy dari prediksi - dibandingkan dengan testSet awalnya
 def getAccuracy(testSet, predictions):
@@ -121,7 +133,7 @@ def train():
     # TresholdValue -- threshold value k* is used to segment an image, digunakan 0.2 dari range 0 - 1
     #TresholdValue = input("Masukkan jumlah k: ")
     #TresholdValue=int(TresholdValue)
-    TresholdValue = 3
+    TresholdValue = 5
     start_time = time.time()
     king = {"Epoch": 0, "Genome": weights, "Accuracy": float(specy(TresholdValue, weights))}
     speed = time.time() - start_time
@@ -138,7 +150,6 @@ def train():
         datetime.timedelta(seconds=int(execution_time / 50))))
     print("=======================================================================")
     print("Starting evolutional algorithm: ")
-    bb = 0
     print("=======================================================================")
     print()
     print()

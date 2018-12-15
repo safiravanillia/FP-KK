@@ -60,14 +60,25 @@ def getNeighbors(trainingSet, testInstance, k):
     return neighbors
 
 def getResponse(neighbors):
-    classVotes = {}
+    #classVotes = {}
+    #for x in range(len(neighbors)):
+        #response = neighbors[x][1][-1]
+        #if response in classVotes:
+            #classVotes[response] += 1
+        #else:
+            #classVotes[response] = 1
+    #sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+    #return sortedVotes[0][0]
+    wx = {}
     for x in range(len(neighbors)):
         response = neighbors[x][1][-1]
-        if response in classVotes:
-            classVotes[response] += 1
+        if neighbors[x][-1] == 0.0:
+            return neighbors[x][1][-1]
+        elif response in wx:
+            wx[response] += (1/pow(neighbors[x][-1], 2))
         else:
-            classVotes[response] = 1
-    sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+            wx[response] = (1/pow(neighbors[x][-1], 2))
+    sortedVotes = sorted(wx.items(), key=operator.itemgetter(1), reverse=True)
     return sortedVotes[0][0]
 
 def getAccuracy(testSet, predictions):

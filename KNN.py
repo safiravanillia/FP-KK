@@ -3,8 +3,6 @@ import random
 import operator
 from sklearn import preprocessing
 
-#record=[]
-
 def loadDataset(filename, split, trainingSet=[], testSet=[]):
     with open(filename, 'r') as csvfile:
         lines = csv.reader(csvfile)
@@ -84,8 +82,8 @@ def main():
     testSet = []
     split = 0.67
     loadDataset('data.csv', split, trainingSet, testSet)
-    print("Train set:" + repr(len(trainingSet)))
-    print("Test set:"+ repr(len(testSet)))
+    print("Data uji:" + repr(len(trainingSet)))
+    print("Data tes:"+ repr(len(testSet)))
 
     predictions = []
     correct = 0
@@ -94,26 +92,26 @@ def main():
     k=int(k)
     for x in range(len(testSet)):
         print("=========================================================================")
-        print("Number of k is " + str(k))
+        print("Jumlah k sebanyak " + str(k))
         neighbors = getNeighbors(trainingSet, testSet[x][1], k)
         result = getResponse(neighbors)
         predictions.append(result)
-        print('> Record of Test Set=' + repr(testSet[x][0]))
-        print('> Predicted=' + repr(result))
+        print('> Urutan data uji=' + repr(testSet[x][0]))
+        print('> Prediksi=' + repr(result))
         print('> Actual=' + repr(testSet[x][1][-1]))
         for y in range(k):
             print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-            print('k num is ' + str(y))
-            print('\nNeighbours (rec: ' + repr(neighbors[y][0]) +') \n=' + repr(neighbors[y][1]))
-            print('\nDistance=' + repr(neighbors[y][-1]))
+            print('k ke-' + str(y))
+            print('\nTetangga (Urutan: ' + repr(neighbors[y][0]) +') \n=' + repr(neighbors[y][1]))
+            print('\nJarak=' + repr(neighbors[y][-1]))
         if testSet[x][1][-1] == result:
             correct+=1
         else:
             false+=1
 
     print("=============================================================================")
-    print('\nCorrect prediction: ' + repr(correct))
-    print('False prediction: ' + repr(false))
+    print('\nJumlah prediksi benar: ' + repr(correct))
+    print('Jumlah prediksi salah: ' + repr(false))
 
     accuracy = getAccuracy(testSet, predictions)
     print('\nAccuracy: ' + repr(accuracy) + '%')

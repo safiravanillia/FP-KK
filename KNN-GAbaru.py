@@ -124,7 +124,6 @@ def specy(TrescholdValue, weights):
 
 
 def train():
-    # weight = 4 karena jumlah atribut pada iris.data adalah 4
     weights = [0] * 13
     # TresholdValue -- threshold value k* is used to segment an image, digunakan 0.2 dari range 0 - 1
     #TresholdValue = input("Masukkan jumlah k: ")
@@ -138,27 +137,27 @@ def train():
     Epos=int(Epos)
     #Epos=5
     Deep = 1
-    print("Number of epochs is " + str(Epos))
-    print("Deepness of the analysis is " + str(Deep))
+    print("Jumlah Epoch = " + str(Epos))
+    print("Kedalaman analisis = " + str(Deep))
     execution_time = 1.1 * speed * Epos * Deep * int(5)
-    print("Estimated execution time is " + str(datetime.timedelta(seconds=int(execution_time))))
-    print("Estimated execution time for one epoch is " + str(
+    print("Perkiraan waktu eksekusi = " + str(datetime.timedelta(seconds=int(execution_time))))
+    print("Perkiraan waktu eksekusi 1 epoch = " + str(
         datetime.timedelta(seconds=int(execution_time / 50))))
     print("=======================================================================")
-    print("Starting evolutional algorithm: ")
+    print("Eksekusi Algoritma Gabungan : ")
     print("=======================================================================")
     print()
     print()
-    print("Epoch num is 0")
+    print("Epoch : 0")
     print("- - - - - - - - - - - - -")
-    print("The best is:")
+    print("Epoch terbaik :")
     print(king)
     # Write the head of file
     filename = "output.txt"
     with open(filename, 'a') as out:
-        str1 = "Number of epochs is " + str(Epos) + "\n" + "Deepness of the analysis is " + str(Deep) + "\n" + \
-               "Estimated execution time is " + str(datetime.timedelta(seconds=int(execution_time))) + "\n " + \
-               "Genetic algorithms optimisation for KNN with preference weights" + "\n" + "=" * 20 + "\n"
+        str1 = "Jumlah Epoch = " + str(Epos) + "\n" + "Kedalaman analisis = " + str(Deep) + "\n" + \
+               "Perkiraan waktu eksekusi = " + str(datetime.timedelta(seconds=int(execution_time))) + "\n " + \
+               "Klasifikasi Penyakit Jantung menggunakan Algoritma Genetik dengan KNN " + "\n" + "=" * 20 + "\n"
         out.write(str1)
 
     # Execute GA
@@ -191,16 +190,15 @@ def train():
     print("=======================================================================")
     print()
     print()
-    print("Epoch num is " + str(epoha))
+    print("Epoch : " + str(epoha))
     print("- - - - - - - - - - - - -")
-    print("The best is:")
+    print("Epoch terbaik :")
     print(king)
-    print("That is all!")
     with open(filename, 'a') as out:
         str1 = "=" * 20
-        str1 = str1 + "\nNumber of epochs is " + str(Epos) + "\n" + "Deepness of the analysis is " + str(Deep) + "\n" + \
-               "Estimated execution time is " + str(datetime.timedelta(seconds=int(execution_time))) + "\n " + \
-               "Genetic algorithms optimisation for KNN with preference weights" + "\n" + "The king is: \n" + str(king) \
+        str1 = str1 + "\nJumlah Epoch = " + str(Epos) + "\n" + "Kedalaman analisis = " + str(Deep) + "\n" + \
+               "Perkiraan waktu eksekusi = " + str(datetime.timedelta(seconds=int(execution_time))) + "\n " + \
+               "Klasifikasi Penyakit Jantung menggunakan Algoritma Genetik dengan KNN" + "\n" + "The king is: \n" + str(king) \
                + "\n" + "=" * 20
         out.write(str1)
 

@@ -95,7 +95,7 @@ def main():
         predictions.append(result)
         print('> Urutan data uji=' + repr(testSet[x][0]))
         print('> Prediksi=' + repr(result))
-        print('> Actual=' + repr(testSet[x][1][-1]))
+        print('> Sebenarnya=' + repr(testSet[x][1][-1]))
         for y in range(k):
             print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
             print('k ke-' + str(y))
@@ -111,6 +111,6 @@ def main():
     print('Jumlah prediksi salah: ' + repr(false))
 
     accuracy = getAccuracy(testSet, predictions)
-    print('\nAccuracy: ' + repr(accuracy) + '%')
+    print('\nAkurasi: ' + repr(accuracy) + '%')
 
 main()

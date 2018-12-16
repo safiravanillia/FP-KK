@@ -1,6 +1,7 @@
 import csv
 import random
 import operator
+import math
 from sklearn import preprocessing
 
 def loadDataset(filename, split, trainingSet=[], testSet=[]):
@@ -16,21 +17,17 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
                 else:
                     dataset[x][y] = float(dataset[x][y])
 
-        #print(dataset)
         a, b, c, d, e, f, g, h, i, j, k, l,m, n = zip(*dataset)
         coba = zip(a, b, c, d, e, f, g, h, i, j, k, l,m )
         fixbgt = list(coba)
         fix = [list(elem) for elem in fixbgt]
-        #print(fix)
 
         normalisasi = preprocessing.normalize(fix)
-        #print(normalisasi)
         a, b, c, d, e, f, g, h, i, j, k, l, m = zip(*normalisasi)
 
         zip2=zip(a, b, c, d, e, f, g, h, i, j, k, l,m,n)
         fixbgt1 = list(zip2)
         yep = [list(elem) for elem in fixbgt1]
-        #print(fixbgt1)
 
         for x in range(len(yep)):
             if random.random() < split:
@@ -39,17 +36,17 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
                 testSet.append((count, yep[x]))
             count += 1
 
-def manhattanDistance(instance1, instance2, length):
+def euclideanDistance(instance1, instance2, length):
     distance = 0
     for x in range(length):
         distance += pow(abs(instance1[x] - instance2[x]),2)
-    return distance
+    return math.sqrt(distance)
 
 def getNeighbors(trainingSet, testInstance, k):
     distances=[]
     length = len(testInstance) - 1
     for x in range(len(trainingSet)):
-        dist = manhattanDistance(testInstance, trainingSet[x][1], length)
+        dist = euclideanDistance(testInstance, trainingSet[x][1], length)
         distances.append(((trainingSet[x][0], trainingSet[x][1], dist)))
     distances.sort(key=operator.itemgetter(-1))
     neighbors = []

@@ -133,7 +133,7 @@ def train():
     # TresholdValue -- threshold value k* is used to segment an image, digunakan 0.2 dari range 0 - 1
     #TresholdValue = input("Masukkan jumlah k: ")
     #TresholdValue=int(TresholdValue)
-    TresholdValue = 5
+    TresholdValue = 3
     start_time = time.time()
     king = {"Epoch": 0, "Genome": weights, "Accuracy": float(specy(TresholdValue, weights))}
     speed = time.time() - start_time

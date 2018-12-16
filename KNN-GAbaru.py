@@ -68,24 +68,36 @@ def getNeighbors(trainingSet, testInstance, k, weights):
     neighbors = []
     for x in range(len(distances)):
         if distances[x][1] <= k:
-            neighbors.append(distances[x][0])
+            neighbors.append((distances[x][0], distances[x][1]))
     if neighbors != None:
-        neighbors.append(distances[0][0])
+        neighbors.append((distances[0][0], distances[0][1]))
     return neighbors
 
 # menyusun perkiraan respon berdasarkan neighbors tersebut
 # neighbors ambil vote untuk atribut class-nya dan getResponse akan ambil vote terbesar sebagai prediksi
 def getResponse(neighbors):
-    classVotes = {}
+    wx = {}
     for x in range(len(neighbors)):
-        response = neighbors[x][1][-1]
-        #print(response)
-        if response in classVotes:
-            classVotes[response] += 1
+        response = neighbors[x][0][1][-1]
+        if neighbors[x][-1] == 0.0:
+            return neighbors[x][0][1][-1]
+        elif response in wx:
+            wx[response] += (1/pow(neighbors[x][-1], 2))
         else:
-            classVotes[response] = 1
-    sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+            wx[response] = (1/pow(neighbors[x][-1], 2))
+    sortedVotes = sorted(wx.items(), key=operator.itemgetter(1), reverse=True)
     return sortedVotes[0][0]
+    #classVotes = {}
+    #for x in range(len(neighbors)):
+    #   response = neighbors[x][0][1][-1]
+       #print(response)
+    #   if response in classVotes:
+    #        classVotes[response] += 1
+    #   else:
+    #        classVotes[response] = 1
+    #sortedVotes = sorted(classVotes.items(), key=operator.itemgetter(1), reverse=True)
+    #return sortedVotes[0][0]
+    
 
 # evaluasi accuracy dari prediksi - dibandingkan dengan testSet awalnya
 def getAccuracy(testSet, predictions):
@@ -134,7 +146,6 @@ def train():
         datetime.timedelta(seconds=int(execution_time / 50))))
     print("=======================================================================")
     print("Starting evolutional algorithm: ")
-    bb = 0
     print("=======================================================================")
     print()
     print()

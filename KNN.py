@@ -93,18 +93,25 @@ def main():
     k=input("\nMasukkan nilai k: ")
     k=int(k)
     for x in range(len(testSet)):
+        print("=========================================================================")
+        print("Number of k is " + str(k))
         neighbors = getNeighbors(trainingSet, testSet[x][1], k)
         result = getResponse(neighbors)
         predictions.append(result)
-        print('> Record of Test Set=' + repr(testSet[x][0]) + ', predicted=' + repr(result) + ', actual=' + repr(testSet[x][1][-1]))
+        print('> Record of Test Set=' + repr(testSet[x][0]))
+        print('> Predicted=' + repr(result))
+        print('> Actual=' + repr(testSet[x][1][-1]))
         for y in range(k):
-            print('Neighbours (rec: ' + repr(neighbors[y][0]) +') =' + repr(neighbors[y][1]) + ', Distance=' + repr(neighbors[y][-1]))
-        print("")
+            print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+            print('k num is ' + str(y))
+            print('\nNeighbours (rec: ' + repr(neighbors[y][0]) +') \n=' + repr(neighbors[y][1]))
+            print('\nDistance=' + repr(neighbors[y][-1]))
         if testSet[x][1][-1] == result:
             correct+=1
         else:
             false+=1
 
+    print("=============================================================================")
     print('\nCorrect prediction: ' + repr(correct))
     print('False prediction: ' + repr(false))
 

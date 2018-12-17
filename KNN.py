@@ -23,6 +23,7 @@ def loadDataset(filename, split, trainingSet=[], testSet=[]):
         fix = [list(elem) for elem in fixbgt]
 
         normalisasi = preprocessing.normalize(fix)
+        #print(normalisasi)
         a, b, c, d, e, f, g, h, i, j, k, l, m = zip(*normalisasi)
 
         zip2=zip(a, b, c, d, e, f, g, h, i, j, k, l,m,n)
@@ -49,6 +50,7 @@ def getNeighbors(trainingSet, testInstance, k):
         dist = euclideanDistance(testInstance, trainingSet[x][1], length)
         distances.append(((trainingSet[x][0], trainingSet[x][1], dist)))
     distances.sort(key=operator.itemgetter(-1))
+    print(distances[-1])
     neighbors = []
     for x in range(k):
         neighbors.append(distances[x])
@@ -93,9 +95,9 @@ def main():
         neighbors = getNeighbors(trainingSet, testSet[x][1], k)
         result = getResponse(neighbors)
         predictions.append(result)
-        print('> Urutan data uji=' + repr(testSet[x][0]))
-        print('> Prediksi=' + repr(result))
-        print('> Sebenarnya=' + repr(testSet[x][1][-1]))
+        print('> Urutan data uji\t=' + repr(testSet[x][0]))
+        print('> Prediksi\t\t\t=' + repr(result))
+        print('> Sebenarnya\t\t=' + repr(testSet[x][1][-1]))
         for y in range(k):
             print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
             print('k ke-' + str(y))
@@ -107,8 +109,8 @@ def main():
             false+=1
 
     print("=============================================================================")
-    print('\nJumlah prediksi benar: ' + repr(correct))
-    print('Jumlah prediksi salah: ' + repr(false))
+    print('\nJumlah prediksi benar\t: ' + repr(correct))
+    print('Jumlah prediksi salah\t: ' + repr(false))
 
     accuracy = getAccuracy(testSet, predictions)
     print('\nAkurasi: ' + repr(accuracy) + '%')

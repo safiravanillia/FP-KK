@@ -56,7 +56,8 @@ def getNeighbors(trainingSet, testInstance, k, weights):
     for x in range(len(trainingSet)):
         dist = euclideanDistance(testInstance, trainingSet[x], length, weights)
         distances.append((trainingSet[x], dist))
-    distances.sort(key=operator.itemgetter(-1))
+    distances.sort(key=operator.itemgetter(1))
+    #print(distances[-1])
     neighbors = []
     for x in range(len(distances)):
         if distances[x][1] <= k:
@@ -110,7 +111,7 @@ def train():
 
     Epos = input("Masukkan jumlah epoch: ")
     Epos = int(Epos)
-    Deep = 1
+    Deep = 2
     print("Jumlah Epoch = " + str(Epos))
     print("Kedalaman analisis = " + str(Deep))
     execution_time = 1.1 * speed * Epos * Deep * int(5)
@@ -138,7 +139,7 @@ def train():
     for epoha in range(Epos):
         organism = []
         for x in range(Deep):
-            for k in range(10):
+            for z in range(10):
                 new_weight = [float(i) for i in[random.SystemRandom().uniform(-1, 1) for _ in range(13)]]
                 genome2 = [abs(float((x + y))) for x, y in zip(genome, new_weight)]
                 organism.append({"Epoch": epoha, "Weight": genome2, "Akurasi": float(specy(TresholdValue, genome2))})
@@ -169,6 +170,5 @@ def train():
             king) \
                + "\n" + "=" * 20
         out.write(str1)
-
-
+        
 train()
